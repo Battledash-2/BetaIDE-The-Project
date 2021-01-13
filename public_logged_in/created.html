@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Beta IDE -- Home</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="icon" href="../assets/logo.png">
+	<style>
+		#body {
+			width: 50vw;
+			position: absolute;
+			/* background: lightblue; */
+			height: 90vh;
+			left: calc(100vw/2 - 50vw/2); /*i'm surprised this worked lol*/
+			margin-top: 70px;
+			font-size: 40px;
+			text-align: center;
+		}
+		#body form h1 {
+			color: #e38d8d;
+		}
+		@media only screen and (max-width: 1204px) {
+			#logo {
+				width: 400px;
+				height: 300px;
+			}
+		}
+		@media only screen and (max-width: 808px) {
+			#logo {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 600px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-width: 473px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 800px) {
+			#body {
+				top: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<nav id='nav'>
+		<h1 id='nav_header'>Beta IDE</h1>
+	</nav>
+	<div id='body'>
+		<form action='/'>
+			<h1>Logged in to account!</h1>
+			<button class='btn'>Go to home</button>
+			<a href="./index.html" class="btn"></a>
+		</form>
+	</div>
+</body>
+</html>

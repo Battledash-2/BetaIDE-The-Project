@@ -1,0 +1,8 @@
+::selection {
+	background: red;
+}
+
+* {
+	text-align: center;
+	font-family: 'Rubik Mono One', monospace, sans-serif;
+}

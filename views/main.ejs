@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Beta IDE -- Home</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="icon" href="../assets/logo.png">
+	<meta name="description" content="BetaIDE: An IDE Specifically Made for Web Dev">
+	<link rel="index,follow">
+	<style>
+		#body {
+			width: 50vw;
+			position: absolute;
+			/* background: lightblue; */
+			height: 90vh;
+			left: calc(100vw/2 - 50vw/2); /*i'm surprised this worked lol || lol*/
+			margin-top: 70px;
+			font-size: 40px;
+			text-align: center;
+		}
+		#body form h1 {
+			color: #e38d8d;
+		}
+		@media only screen and (max-width: 1204px) {
+			#logo {
+				width: 400px;
+				height: 300px;
+			}
+		}
+		@media only screen and (max-width: 808px) {
+			#logo {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 600px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-width: 473px) {
+			#nav {
+				height: 0; /* technically invisible */
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 800px) {
+			#body {
+				top: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div style="position: absolute; left: -999px;" id='content'>
+		<%= user %>
+	</div>
+	<nav id='nav'>
+		<h1 id='nav_header'>Beta IDE</h1>
+		<div style="position: absolute; right: 15px; border-radius: 15px; background: #b8f6ff; height: 40px; width: 120px; display: grid; align-content: center;" class="nav_btn" onclick="javascript:location = 'logout'">Logout</div>
+		<div style="position: absolute; left: 15px; border-radius: 15px; background: #b8f6ff; height: 40px; width: 120px; display: grid; align-content: center;" class="nav_btn" onclick="javascript:location.href = 'code.html'">New Project</div>
+	</nav>
+	<div id='body'>
+		View Projects: <button class='btn' style='height: 50px'>View</button>
+		<script>
+			const user = document.querySelector('#content').innerText;
+			document.querySelector('#content').remove();
+			document.querySelector('button').onclick = ()=>{
+				open('https://'+location.hostname+'/me');
+			}
+		</script>
+	</div>
+</body>
+</html>

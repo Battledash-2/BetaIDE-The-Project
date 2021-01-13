@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Beta IDE -- Home</title>
+	<link rel="stylesheet" href="../../css/style.css">
+	<link rel="icon" href="../../assets/logo.png">
+	<style>
+		body {
+			overflow-x: hidden;
+		}
+		#body {
+			width: 100vw;
+			position: absolute;
+			/* background: lightblue; */
+			height: 90vh;
+			/*left: calc(100vw/2 - 50vw/2); /*i'm surprised this worked lol*/
+			margin-top: 70px;
+			font-size: 40px;
+			text-align: center;
+		}
+		#body form h1 {
+			color: #e38d8d;
+		}
+		@media only screen and (max-width: 1204px) {
+			#logo {
+				width: 400px;
+				height: 300px;
+			}
+		}
+		@media only screen and (max-width: 808px) {
+			#logo {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 600px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-width: 473px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 800px) {
+			#body {
+				top: 0;
+			}
+		}
+		#head {
+			font-size: 63px;
+		}
+		#projects {
+			font-size: 30px;
+			width: 100vw;
+			position: absolute;
+			left: 5vw;
+		}
+		#projects .project {
+			width: 90vw;
+			border: 1px solid #333;
+			background: lightblue;
+			cursor: pointer;
+			color: #fff;
+		}
+		#projects .project:hover {
+			background: #5793f2;
+		}
+		#projects a {
+			color: #fff;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<div style="position: absolute; left: -999px;" id='display_content'>
+		<div id='projects'>
+			<%= projects %>
+		</div>
+		<div id='user'>
+			<%= user %>
+		</div>
+	</div>
+	<nav id='nav'>
+		<h1 id='nav_header'>Beta IDE</h1>
+	</nav>
+	<div id='body'>
+		<h1 id='head'><%= user %></h1><br>
+		<div id='projects'>
+			
+		</div>
+	</div>
+	<script>
+		const user = document.querySelector('#user').innerText;
+		const projects = JSON.parse(document.querySelector('#projects').innerText);
+
+		document.querySelector('#display_content').remove();
+		const projects_d = document.querySelector('#projects');
+		for(var project in projects) {
+			let container = document.createElement('div');
+			container.classList.add('project');
+			let link = document.createElement('a');
+			link.href = 'https://'+location.hostname+'/p/view/'+user+'/'+project+'/';
+			container.innerText = project;
+			link.appendChild(container);
+			projects_d.appendChild(link);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Beta IDE -- Signup</title>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="icon" href="/assets/logo.png">
+	<style>
+		#body {
+			width: 50vw;
+			position: absolute;
+			/* background: lightblue; */
+			height: 90vh;
+			left: calc(100vw/2 - 50vw/2); /*i'm surprised this worked lol*/
+			margin-top: 70px; /*the height of the header*/
+			font-size: 40px;
+		}
+		#body form h1 {
+			color: #e38d8d;
+		}
+		
+		#logo {
+			position: absolute;
+			right: -14vw;
+			top: 20px;
+		}
+
+		@media only screen and (max-width: 1327px) {
+			#logo {
+				width: 400px;
+				height: 300px;
+			}
+		}
+
+		@media only screen and (max-width: 962px) {
+			#logo {
+				right: -16vw;
+				width: 240px;
+				height: 200px;
+			}
+		}
+		
+		@media only screen and (max-width: 732px) {
+			#logo {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-width: 473px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 600px) {
+			#nav {
+				height: 0; // technically invisible
+			}
+			.nav_btn {
+				margin-top: 50px;
+			}
+			#body form h1 {
+				display: none;
+			}
+			#nav_header {
+				display: none;
+			}
+		}
+
+		@media only screen and (max-height: 800px) {
+			#body {
+				top: 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<nav id='nav'>
+		<h1 id='nav_header'>Beta IDE</h1>
+		<div style="position: absolute; right: 15px; border-radius: 15px; background: #b8f6ff; height: 23px; width: 103px; display: grid; align-content: center;" class="nav_btn" onclick="javascript:location = 'login'">Login</div>
+	</nav>
+	<div id='body'>
+		<form method="POST">
+			<h1>Signup</h1>
+			<label>Username</label><br>
+			<input class='input' placeholder='Username' name='name' spellcheck="off" autocomplete="false"><br>
+			<br>
+			<label>Password</label><br>
+			<input type='password' class='input' placeholder="Password" name="pass" spellcheck="off" autocomplete="false"><br>
+			<label>Password<span style="color: grey;font-size: 20px;">(again)</span></label><br>
+			<input type='password' class='input' placeholder="Password" name="pass" spellcheck="off" autocomplete="false"><br>
+			<button class='btn'>Signup</button><br>
+			<p id='e' style='color: red;font-family: monospace, arial, sans-serif;font-size: 20px;'></p>
+			<script>
+				let url = new URL(location);
+				let sp = url.searchParams;
+
+				if(sp.get('error')) {
+					document.querySelector('#e').innerText = sp.get('error');
+				}
+			</script>
+		</form>
+		<img id='logo' src='assets/logo.png'>
+	</div>
+</body>
+</html>

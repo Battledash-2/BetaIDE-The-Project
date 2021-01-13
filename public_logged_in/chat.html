@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="/css/redirect.css" type="text/css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+</head>
+<body>
+	<h1 id="redirect-text">Redirecting</h1>
+	<script>
+		let hmd = 0;
+		window.setTimeout(()=>{window.document.getElementById("redirect-text").innerText = "Redirecting."}, 330)
+		window.setTimeout(()=>{window.document.getElementById("redirect-text").innerText = "Redirecting.."}, 660)
+		window.setTimeout(()=>{window.document.getElementById("redirect-text").innerText = "Redirecting..."}, 999)
+		window.setTimeout(()=>{window.location.href("chat.betaide.repl.co")}, 1500)
+	</script>
+</body>
+</html>
