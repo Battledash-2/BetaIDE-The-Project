@@ -92,8 +92,59 @@
 				jv.style.display = "block";
 				bd.style.display = "none";
 			}
+
+			try {
+				document.querySelector('#jView').innerText = JSON.stringify(files);
+			} catch(e) {
+				console.log('There was an error while trying to update JSON view. Log: ', e);
+			}
+		}
+		const copyJson = function() {
+			let jv = document.querySelector('#jView');
+			let nv = document.createElement('textarea');
+
+			nv.value = jv.innerText;
+			nv.style.display = "none";
+			
+			document.body.appendChild(nv);
+			nv.select();
+
+			document.execCommand('copy');
+
+			nv.remove();
+
+			copied();
+		}
+		function copied() {
+			let c = document.createElement('div');
+			c.classList.add('ac-al');
+
+			c.innerHTML = '<h1 class="ac-al-h1">Copied Text</h1>';
+
+			document.body.appendChild(c);
+			setTimeout(()=>c.remove(), 1000);
 		}
 	</script>
+	<style>
+		.ac-al {
+			position: absolute;
+			bottom: 60px;
+			right: 5px;
+			width: 300px;
+			height: 50px;
+			background: lightblue;
+			border-radius: 5px;
+			text-align: center;
+			display: grid;
+			align-content: center;
+			transition: display 1s ease;
+		}
+		.ac-al-h1 {
+			font-size: 20px;
+			color: #fff;
+			font-family: Arial;
+		}
+	</style>
 </head>
 <body>
 	<nav id='nav'>
@@ -111,11 +162,17 @@
 				top: 50px;
 				overflow: auto;
 			}
+			#jc-bt {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+			}
 		</style>
 		<pre>
 			<code id="jView" class="hljs language-json">
 			</code>
 		</pre>
+		<button class="btn" id="jc-bt" onclick="copyJson()">Copy</button>
 	</div>
 	<div id='body'>
 		<style>
@@ -325,13 +382,17 @@
 			document.querySelector('#uname').remove();
 			document.querySelector('#cname').remove();
 			let currentFile = 'index.html';
+			let didd = false;
 			function main() {
 				document.querySelector('#cf').innerText = currentFile;
 				document.querySelector('#ltv').href = 'javascript:open("https://' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
 
 				// '#jView'
 				try {
-					let jv = document.querySelector('#jView').innerText = JSON.stringify(files);
+					let jv = document.querySelector('#jView');
+					if(jv.style.display == "none") {
+						jv.innerText = JSON.stringify(files);
+					}
 				} catch(e) {
 					console.log('There was an error while trying to update JSON view. Log: ', e);
 				}
