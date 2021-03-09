@@ -130,7 +130,11 @@
 						"svg": "image/svg+xml",
 						"png": "image/png",
 						"jpg": "image/jpeg",
-						"jpeg": "image/jpeg"
+						"jpeg": "image/jpeg",
+						"ide": "application/json",
+						"json": "application/json",
+						"mjs": "application/javascript",
+						"jsm": "application/javascript"
 					};
 					for(var ext in mimeTypes) {
 						if(fname.endsWith('.'+ext)) {
@@ -141,6 +145,7 @@
 					return 'text/plain';
 				}
 				var files = JSON.parse(document.querySelector('#fhold').innerText);
+				
 				//document.querySelector('#fhold').remove();
 
 				// we need to display the files
@@ -275,7 +280,11 @@
 					"css": "css",
 					"js": "js",
 					"svg": "html",
-					"xml": "html"
+					"xml": "html",
+					"json": "js",
+					"ide": "js",
+					"mjs": "js",
+					"jsm": "js"
 				}
 				let res = 'text';
 				for(var i in langs) {

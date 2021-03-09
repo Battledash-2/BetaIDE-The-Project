@@ -107,19 +107,21 @@ const fs = require('fs'),
 	app = express(),
 	letters = JSON.parse(getJsonArrayFromText("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890#_-")),
 	http = require('http').createServer(app),
-	io = require('socket.io')(http);
+	io = require('socket.io')(http, {
+		origins: ["https://betaide.repl.co"]
+	});
 
 let shift = Math.floor(Math.random() * ((26 * 2) + 13));
 
-if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
-	function update() {
-		shift = Math.floor(Math.random() * ((26 * 2) + 13));
+function update() {
+	shift = Math.floor(Math.random() * ((26 * 2) + 13));
 
-		if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
-			update();
-		}
+	if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
+		update();
 	}
+}
 
+if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
 	update();
 }
 
@@ -181,6 +183,9 @@ const starterHtml2 =
 		
 	</body>
 </html>`;
+const starterSettings = `{
+	"allowFetch": true
+}`;
 
 app.get('/p/del/*', (req,res)=>{
 	// console.log(req.params); { project: '' }
@@ -222,6 +227,9 @@ app.get('/p/del/*', (req,res)=>{
 	} else {
 		return res.send('Unknown user @'+xssParse(user));
 	}
+});
+app.get('/readme', (req,res)=>{
+	res.render("readme.ejs");
 });
 app.post('/p/create', (req,res)=>{
 	const body = req.body;
@@ -266,10 +274,17 @@ app.post('/p/create', (req,res)=>{
 										"index.html": starterHtml
 									}
 								}
-							} else {
+							} else if(body.m.toLowerCase() == "StylerML") {
 								proj.data[currentUser.name][body.name] = {
 									"files": {
 										"index.html": starterHtml2
+									}
+								}
+							} else if(body.m.toLowerCase().startsWith("raw")) {
+								proj.data[currentUser.name][body.name] = {
+									"files": {
+										"index.html": starterHtml,
+										".ide": starterSettings
 									}
 								}
 							}
@@ -314,7 +329,11 @@ function mimeFromName(fname) {
 		"svg": "image/svg+xml",
 		"png": "image/png",
 		"jpg": "image/jpeg",
-		"jpeg": "image/jpeg"
+		"jpeg": "image/jpeg",
+		"ide": "application/json",
+		"json": "application/json",
+		"mjs": "application/javascript",
+		"jsm": "application/javascript"
 	};
 	for(var ext in mimeTypes) {
 		if(fname.endsWith('.'+ext)) {
@@ -342,6 +361,14 @@ app.get('/p/view/*', (req,res)=>{
 			const filePath = split;
 
 			let displayResult = project;
+
+			try {
+				let j = JSON.parse(project['.ide']);
+				if(j.allowFetch && j.allowFetch == true) {
+					res.setHeader("Access-Control-Allow-Origin", "*"); // enable fetch from anywhere
+				}
+			} catch(e) {0;/*no settings file*/}
+
 			//console.log(filePath); [ 'hello', 'world', '' ]
 			for(var i = 0; i<filePath.length; i++) {
 				if(filePath[i]=='') {filePath.splice(i, 1)} else {
@@ -354,17 +381,17 @@ app.get('/p/view/*', (req,res)=>{
 					}
 				}
 			}
-			if(displayResult == project) {
+			if(displayResult == project && project['index.html'] != null) {
 				displayResult = displayResult['index.html'];
 				fname = 'index.html';
 				// console.log(displayResult);
 			}
-			if(fname == '') {
+			if(fname == '' && project['index.html'] != null) {
 				displayResult = displayResult['index.html'];
 				fname = 'index.html';
 			}
 			// console.log(displayResult);
-			if(typeof displayResult == 'object') {
+			if(typeof displayResult == 'object' && project['index.html'] != null) {
 				displayResult = displayResult['index.html'];
 				fname = 'index.html';
 			}
@@ -426,6 +453,74 @@ app.get('/p/ide/*', (req,res)=>{
 	} else {
 		return res.send('Unknown user @'+xssParse(user));
 	}
+});
+app.get('/p/cli', (req,res)=>{
+	let user = '';
+
+	const cookie = parseCookies(req.headers.cookie);
+	if(cookie.loginSess && sess.data[cookie.loginSess]) {
+		let userId = sess.data[cookie.loginSess];
+		let cuser = '';
+		for(var u in users.data) {
+			if(users.data[u].id == userId) {
+				cuser = u;
+			}
+		}
+		user = cuser;
+	} else {
+		return res.send('You\'re not logged in');
+	}
+
+	// console.log(user);
+	
+	if(proj.data[user]) {
+		NewUUID = genId();
+
+		function update(id) {
+			if(proj.data[user][id]) {
+				NewUUID = id;
+				update(id);
+			} else {
+				return id;
+			}
+		}
+		update();
+
+		try {
+			let j_pd = JSON.parse(decodeURIComponent(req.query.data));
+			proj.data[user][NewUUID] = j_pd;
+
+			res.setHeader('Content-Type', 'text/html');
+			res.redirect('/p/ide/'+NewUUID);
+		} catch(e) {
+			res.send('Failed to read JSON:<br><pre>'+e+'</pre>');
+		}
+	} else {
+		return res.send('Unknown user @'+xssParse(user));
+	}
+
+	// if(proj.data[user]) {
+	// 	if(proj.data[user][project]) {
+	// 		if(isOwner) {
+	// 			// there is a project
+	// 			const project_f = proj.data[user][project].files;
+				
+	// 			// other stuff
+	// 			res.setHeader('Content-Type', 'text/html');
+	// 			res.render('edit.ejs', {
+	// 				files: JSON.stringify(project_f) || '{}',
+	// 				name: project,
+	// 				owner: user
+	// 			});
+	// 		} else {
+	// 			return res.send('You do not have access to this #2');
+	// 		}
+	// 	} else {
+	// 		return res.send('Unknown project #'+xssParse(project));
+	// 	}
+	// } else {
+	// 	return res.send('Unknown user @'+xssParse(user));
+	// }
 });
 app.get('/me', (req,res)=>{
 	let cookies = parseCookies(req.headers.cookie);
@@ -674,6 +769,8 @@ app.post('/signup.html', (req,res)=>{
 				return res.redirect('signup.html?error=Username or password has invalid characters');
 			}
 
+			update();
+			
 			let userId = getUserId();
 			let sessId = getSessId();
 
@@ -746,6 +843,3 @@ app.get('/',(req,res)=>{
 http.listen(port, ()=>{
 	console.log("listening at "+port);
 });
-
-let userlist = Object.keys(proj.data)
-console.log(userlist)
