@@ -67,14 +67,56 @@
 			width: 100vw;
 			text-align: center;
 		}
+		#json-view {
+			display: none;
+		}
+		.hljs {
+			tab-size: 4;
+		}
+		body {
+			overflow: hidden;
+		}
 	</style>
+	<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/default.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+	<script>
+		const viewJson = function() {
+			let jv = document.querySelector('#json-view');
+			let bd = document.querySelector('#body');
+
+			if(jv.style.display == "block") {
+				jv.style.display = "none";
+				bd.style.display = "block";
+			} else {
+				jv.style.display = "block";
+				bd.style.display = "none";
+			}
+		}
+	</script>
 </head>
 <body>
 	<nav id='nav'>
 		<button class='btn' onclick='cf()'>Create File</button>
 		<h1 id='nav_header'>Beta IDE -- <span id='cf'></span></h1>
 		<a id='ltv'>View</a>
+		<a id='ltv-v2' href="javascript:viewJson();">JSON</a>
 	</nav>
+	<div id="json-view">
+		<style>
+			#jView {
+				width: 99vw;
+				height: calc(100vh - 100px);
+				position: absolute;
+				top: 50px;
+				overflow: auto;
+			}
+		</style>
+		<pre>
+			<code id="jView" class="hljs language-json">
+			</code>
+		</pre>
+	</div>
 	<div id='body'>
 		<style>
 			#ltv {
@@ -91,6 +133,22 @@
 				cursor: pointer;
 			}
 			#ltv:hover {
+				background: #6b6a6a;
+			}
+			#ltv-v2 {
+				position: absolute;
+				right: 70px;
+				height: 50px;
+				width: 70px;
+				top: 0;
+				text-decoration: none;
+				color: #fff;
+				display: grid;
+				align-content: center;
+				background: #8c8c8c;
+				cursor: pointer;
+			}
+			#ltv-v2:hover {
 				background: #6b6a6a;
 			}
 			#files {
@@ -270,6 +328,15 @@
 			function main() {
 				document.querySelector('#cf').innerText = currentFile;
 				document.querySelector('#ltv').href = 'javascript:open("https://' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
+
+				// '#jView'
+				try {
+					let jv = document.querySelector('#jView').innerText = JSON.stringify(files);
+				} catch(e) {
+					console.log('There was an error while trying to update JSON view. Log: ', e);
+				}
+
+				hljs.highlightAll();
 			}
 			setInterval(main, 300);
 			let edits = false;
