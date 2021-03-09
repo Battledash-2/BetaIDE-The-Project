@@ -20,7 +20,8 @@
 ##### BetaIDE was made so everyone could host their projects online. You can host basically any static html website, and can even allow people to fetch to it with our custom file `.ide` which is a JSON file with settings for the displayer (NodeJS) to follow.
 
 ## Update Log
-- ##### Added JavaScript highlighting to .mjs and .jsm files
+- ##### Added API (/p/cli)
+- OLD- ##### Added JavaScript highlighting to .mjs and .jsm files
 
 ## Suggestions
 ![Error While Loading Comments](https://commentGenerator.ironblockhd.repl.co/image/10a34911674aef)
