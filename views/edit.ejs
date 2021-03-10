@@ -94,7 +94,11 @@
 			}
 
 			try {
-				document.querySelector('#jView').innerText = JSON.stringify(files);
+				let json = JSON.stringify(files);
+
+				document.querySelector('#jView').innerText = json;
+				document.querySelector('#jc-btw').value = 'https://betaide.repl.co/p/cli?data={"files":{'+encodeURIComponent(json)+'}}';
+				hljs.highlightAll();
 			} catch(e) {
 				console.log('There was an error while trying to update JSON view. Log: ', e);
 			}
@@ -161,11 +165,51 @@
 				position: absolute;
 				top: 50px;
 				overflow: auto;
+				overflow-x: hidden;
+				word-wrap: break-word;
+				white-space: pre-wrap;
 			}
 			#jc-bt {
 				position: absolute;
 				right: 0;
 				bottom: 0;
+			}
+			#jc-btz {
+				position: absolute;
+				bottom: 0;
+				left: 5px;
+			}
+			#jc-btz:hover {
+				background: -internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59)) !important;
+			}
+			#jc-btw {
+				position: absolute;
+				bottom: 0;
+				left: 260px;
+				width: calc(100vw - 515px);
+				cursor: text;
+				overflow-x: auto;
+				word-wrap: no-wrap;
+				outline: none;
+			}
+			/* width */
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: #f1f1f1;
+			}
+
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: #888;
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: #555;
 			}
 		</style>
 		<pre>
@@ -173,6 +217,8 @@
 			</code>
 		</pre>
 		<button class="btn" id="jc-bt" onclick="copyJson()">Copy</button>
+		<input class="btn" id="jc-btw">
+		<button class="btn" id="jc-btz" onclick="copyJson()">API Link</button>
 	</div>
 	<div id='body'>
 		<style>
@@ -386,18 +432,6 @@
 			function main() {
 				document.querySelector('#cf').innerText = currentFile;
 				document.querySelector('#ltv').href = 'javascript:open("https://' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
-
-				// '#jView'
-				try {
-					let jv = document.querySelector('#jView');
-					if(jv.style.display == "none") {
-						jv.innerText = JSON.stringify(files);
-					}
-				} catch(e) {
-					console.log('There was an error while trying to update JSON view. Log: ', e);
-				}
-
-				hljs.highlightAll();
 			}
 			setInterval(main, 300);
 			let edits = false;
