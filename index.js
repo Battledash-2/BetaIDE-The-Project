@@ -105,20 +105,6 @@ const fs = require('fs'),
 		origins: ["https://betaide.repl.co"]
 	});
 
-let shift = Math.floor(Math.random() * ((26 * 2) + 13));
-
-function update() {
-	shift = Math.floor(Math.random() * ((26 * 2) + 13));
-
-	if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
-		update();
-	}
-}
-
-if(shift <= 0 || shift == 26 || shift == ((26 * 2) + 13)) {
-	update();
-}
-
 app.use(express.static("./public_not_logged_in"), express.Router());
 //app.use('/p/', express.static("./public_logged_in"), express.Router())
 app.use(express.urlencoded());
@@ -762,8 +748,6 @@ app.post('/signup.html', (req,res)=>{
 			if(encrypt(req.body.pass[0]) == false || encrypt(req.body.name) == false) {
 				return res.redirect('signup.html?error=Username or password has invalid characters');
 			}
-
-			update();
 			
 			let userId = getUserId();
 			let sessId = getSessId();
@@ -774,7 +758,6 @@ app.post('/signup.html', (req,res)=>{
 			sess.data[sessId] = userId;
 			users.data[req.body.name] = {
 				"password": encrypt(req.body.pass[0]),
-				"shift": shift,
 				"id": userId,
 				"name": req.body.name
 			};
