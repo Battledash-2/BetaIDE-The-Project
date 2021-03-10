@@ -1,34 +1,28 @@
-const encrypt = (m="")=>{
-		let e = false;
-		function returnError() {
-			e = true;
-		}
-		let encrypted = m.split('').map((v,l)=>{
-			if(letters.indexOf(v) > -1) {
-				if(letters[letters.indexOf(v)+shift]) {
-					return letters[letters.indexOf(v)+shift];
-				} else {
-					return letters[(letters.indexOf(v)-letters.length)+shift]
-				}
-			} else {
-				returnError();
-			}
-		}).join('');
-		if(e) return false;
-		return encrypted;
-	},
-	decrypt = (m="", s=shift) =>{
-		let decrypted = m.split('').map((v,l)=>{
-			if(letters.indexOf(v) > -1) {
-				if(letters[letters.indexOf(v)-s]) {
-					return letters[letters.indexOf(v)-s];
-				} else {
-					return letters[(letters.indexOf(v)+letters.length)-s]
-				}
-			}
-		}).join('');
-		return decrypted
-	}
+require('dotenv').config();
+
+const crypto = require('crypto');
+
+const algorithm = 'aes-256-ctr';
+const secretKey = process.env.token;
+const iv = crypto.randomBytes(16);
+
+const encrypt = (text) => {
+    const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+
+    return {
+        iv: iv.toString('hex'),
+        content: encrypted.toString('hex')
+    };
+};
+
+const decrypt = (hash) => {
+    const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
+
+    const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()]);
+
+    return decrpyted.toString();
+};
 
 const deleteUser = function(un) {
 	if(un in users.data) {
@@ -814,7 +808,7 @@ app.post('/login.html', (req,res)=>{
 				return res.redirect('login.html?error=Invalid username or password');
 			}
 			if(users.data[body.name]) {
-				if(body.pass == decrypt(users.data[body.name].password, users.data[body.name].shift)) {
+				if(body.pass == decrypt(users.data[body.name].password)) {
 					for(var sessId in sess.data) {
 						if(sess.data[sessId] == users.data[body.name].id) {
 							res.cookie('loginSess', sessId, {maxAge: ((1000*60)*24)*9999});
