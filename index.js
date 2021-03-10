@@ -254,7 +254,7 @@ app.post('/p/create', (req,res)=>{
 										"index.html": starterHtml
 									}
 								}
-							} else if(body.m.toLowerCase() == "StylerML") {
+							} else if(body.m.toLowerCase() == "stylerml") {
 								proj.data[currentUser.name][body.name] = {
 									"files": {
 										"index.html": starterHtml2
@@ -419,11 +419,15 @@ app.get('/p/ide/*', (req,res)=>{
 				
 				// other stuff
 				res.setHeader('Content-Type', 'text/html');
-				res.render('edit.ejs', {
-					files: JSON.stringify(project_f) || '{}',
-					name: project,
-					owner: user
-				});
+				try {
+					res.render('edit.ejs', {
+						files: JSON.stringify(project_f) || '{}',
+						name: project,
+						owner: user
+					});
+				} catch(e) {
+					res.send('<h1>That\'s an error:</h1>'+e);
+				}
 			} else {
 				return res.send('You do not have access to this #2');
 			}
@@ -616,10 +620,14 @@ app.get('/u/*',(req,res)=>{
 	if(name in users.data) {
 		// come back to this
 		if(name in proj.data) {
-			res.render('view_user.ejs', {
-				user: name,
-				projects: JSON.stringify(proj.data[name])
-			});
+			try {
+				res.render('view_user.ejs', {
+					user: name,
+					projects: JSON.stringify(proj.data[name])
+				});
+			} catch(e) {
+				res.send('<h1>Well, that\'s an error:</h1>'+e);
+			}
 		}
 	} else {
 		res.send('Unknown user');
