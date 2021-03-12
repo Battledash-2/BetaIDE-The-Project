@@ -2,6 +2,8 @@
 ##### **BetaIDE** was made by *@Battledash2* and *@AnthonyMouse* on repl.it (now replit.com)
 ****
 
+# Updates coming soon! A remastered IDE and support for folders!
+
 ##### ***Note:*** *This code will only work on replit.com*
 
 ## What is **BetaIDE**?
