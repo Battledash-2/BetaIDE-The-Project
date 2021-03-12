@@ -2,6 +2,8 @@
 ##### **BetaIDE** was made by *@Battledash2* and *@AnthonyMouse* on repl.it
 ****
 
+##### ***Note:*** *This code will only work on replit.com*
+
 ## What is **BetaIDE**?
 ##### BetaIDE is an IDE made using NodeJS. It lets you host any codes for free, you can also specify if you'd like it to be fetchable (CORS). 
 ##### It has features like:
