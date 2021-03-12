@@ -1,5 +1,5 @@
 # BetaIDE -- The Online IDE
-##### **BetaIDE** was made by *@Battledash2* and *@AnthonyMouse* on repl.it
+##### **BetaIDE** was made by *@Battledash2* and *@AnthonyMouse* on repl.it (now replit.com)
 ****
 
 ##### ***Note:*** *This code will only work on replit.com*
@@ -24,7 +24,7 @@
 ## Update Log
 - ##### Added API tools
 - ##### Added API (/p/cli)
-- OLD- ##### Added JavaScript highlighting to .mjs and .jsm files
+- ##### OLD- Added JavaScript highlighting to .mjs and .jsm files
 
 ## Suggestions
 ![Error While Loading Comments](https://commentGenerator.ironblockhd.repl.co/image/10a34911674aef)
