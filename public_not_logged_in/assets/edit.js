@@ -7,7 +7,7 @@ let currentFile = 'index.html';
 let didd = false;
 function main() {
 	document.querySelector('#cf').innerText = currentFile;
-	document.querySelector('#ltv').href = 'javascript:open("https://' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
+	document.querySelector('#ltv').href = 'javascript:open("https://usercontent.' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
 }
 setInterval(main, 300);
 let edits = false;
