@@ -93,7 +93,7 @@
 	font-family: Consolas;
 	overflow: auto;
 }
-#editor {
+/* #editor {
 	position: absolute;
 	left: 20vw !important;
 	top: 50px !important;
@@ -114,8 +114,8 @@
 }
 #editor:after {
 	content: ' ';
-}
-#text-edit {
+} */
+/* #text-edit {
 	position: absolute;
 	left: 20vw !important;
 	top: 50px !important;
@@ -123,16 +123,13 @@
 	height: calc(100vh - 55.05px);
 	font-size: 20px;
 	font-family: monospace;
-	background: transparent;
-	color: #fff;
 	tab-size: 4;
 	caret-color: #fff;
 	outline: none;
 	z-index: 99;
-	color: transparent;
 	overflow: auto;
 	resize: none;
-}
+} */
 .ac-al {
 	position: absolute;
 	bottom: 60px;
@@ -214,9 +211,14 @@
 #json-view {
 	display: none;
 }
-.hljs {
-	tab-size: 4;
-}
 body {
 	overflow: hidden;
+}
+#editor-area {
+	/* 20vw */
+	position: absolute;
+	left: 20vw;
+	top: 50px;
+	width: calc(100vw - 20vw);
+	height: calc(100vh - 50px);
 }

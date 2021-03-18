@@ -1,14 +1,18 @@
 function cf() {
-	let fname = prompt('What would you like to name the file?', 'New File');
-	if(fname.trim() == "") {
-		return cf();
+	try {
+		let fname = prompt('What would you like to name the file?', 'New File');
+		if(fname.trim() == "") {
+			return cf();
+		}
+		if(files[fname]) {
+			let c = confirm('A file with that name already exists. Would you like to continue?');
+			if(!c) return;
+		}
+		files[fname] = "";
+		uda();
+	} catch(e) {
+		console.warn('Canceled created of file');
 	}
-	if(files[fname]) {
-		let c = confirm('A file with that name already exists. Would you like to continue?');
-		if(!c) return;
-	}
-	files[fname] = "";
-	uda();
 }
 function mimeFromName(fname) {
 	let mimeTypes = {
@@ -79,13 +83,11 @@ function addFIn(sel, obj, oname) {
 					if(typeof files[fn] == 'string') {
 						if(n == fn) {
 							container.remove();
-							document.querySelector('#text-edit').value = '';
-							highlight();
+							cme.setValue(files['index.html'] || '');
+							highlight('htmlmixed');
 							currentFile = 'index.html';
 							setTimeout(()=>{
-							delete files[fn]; currentFile = 'index.html';
-							document.querySelector("#text-edit").value = files['index.html'];
-							highlight('#editor', 'html');
+							delete files[fn];
 							}, 50);
 						}
 					}

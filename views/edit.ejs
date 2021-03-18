@@ -6,11 +6,18 @@
 	<title>Beta IDE -- <%= name %></title>
 	<link rel="stylesheet" href="../../../css/style.css">
 	<link rel="icon" href="../../../assets/logo.png">
+	<link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+	<script src="/codemirror/lib/codemirror.js"></script>
+	<script src="/codemirror/mode/javascript/javascript.js"></script>
+	<script src="/codemirror/mode/xml/xml.js"></script>
+	<script src="/codemirror/mode/css/css.js"></script>
+	<link rel="stylesheet" href="/codemirror/theme/material.css">
+	<script src="/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="/assets/ej.js"></script>
+	<link rel="stylesheet" href="/css/edit_style.css">
 	<link rel="stylesheet"
       href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/default.min.css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
-	<script src="/assets/ej.js"></script>
-	<link rel="stylesheet" href="/css/edit_style.css">
 </head>
 <body>
 	<nav id='nav'>
@@ -34,8 +41,7 @@
 			<div id='fhold' style="position: absolute; left: -99999999px; white-space: pre-wrap"><%= files %></div>
 			<script src="/assets/e2.js"></script>
 		</div>
-		<textarea id="text-edit"></textarea>
-		<div id="editor"></div>
+		<div id="editor-area"><textarea id="text-edit"></textarea></div>
 		<script src='/socket.io/socket.io.js'></script>
 		<script src='/../../../assets/darkmode.js'></script>
 		<script src='/../../../assets/lightmode.js'></script>

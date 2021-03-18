@@ -6,23 +6,30 @@ document.querySelector('#cname').remove();
 let currentFile = 'index.html';
 let didd = false;
 function main() {
-	document.querySelector('#cf').innerText = currentFile;
 	document.querySelector('#ltv').href = 'javascript:open("https://usercontent.' + location.hostname + '/p/view/' + user_name + '/' + project_name + '/")';
+	document.querySelector('#cf').innerText = currentFile || 'No File Open';
+	// #editor-area / resize the editor
+	try {
+		let ear = document.querySelector('#editor-area');
+		cme.setSize(null, ear.getBoundingClientRect().height);
+	} catch(e) {
+		console.warn('Codemirror Not Loaded.');
+	}
 }
 setInterval(main, 300);
 let edits = false;
 function glang(fname) {
 	let langs = {
 		"txt": "text",
-		"html": "html",
+		"html": "htmlmixed",
 		"css": "css",
-		"js": "js",
-		"svg": "html",
-		"xml": "html",
-		"json": "js",
-		"ide": "js",
-		"mjs": "js",
-		"jsm": "js"
+		"js": "javascript",
+		"svg": "htmlmixed",
+		"xml": "htmlmixed",
+		"json": "javascript",
+		"ide": "javascript",
+		"mjs": "javascript",
+		"jsm": "javascript"
 	}
 	let res = 'text';
 	for(var i in langs) {
@@ -32,36 +39,10 @@ function glang(fname) {
 	}
 	return res;
 }
-function scroll() {
-	const edt = document.querySelector('#editor');
-	const tedt = document.querySelector('#text-edit');
-	edt.scrollTop = tedt.scrollTop;
-	edt.scrollLeft = tedt.scrollLeft;
+function highlight(m='htmlmixed') {
+	cme.setOption('mode', m)
 }
-function highlight(m='html') {
-	files[currentFile] = document.querySelector('#text-edit').value;
-	let lang = glang(currentFile);
-	if(lang == 'text') {
-		const edt = document.querySelector('#editor');
-		const tedt = document.querySelector('#text-edit');
-		
-		edt.innerText = tedt.value;
-		scroll();
-		return true;
-	} else {
-		m = lang;
-	}
-	const edt = document.querySelector('#editor');
-	const tedt = document.querySelector('#text-edit');
-	edt.innerHTML = tedt.value.replace(/&/gmi, '&amp;').replace(/</gmi, '&lt;').replace(/>/gmi, '&gt;').replace(/\n/gmi, '<br><span></span>');
-	dhighlight('editor', m);
-	scroll();
-}
-setTimeout(highlight, 1);
-document.querySelector('#text-edit').onscroll = scroll;
-document.querySelector('#text-edit').oninput = highlight;
 //setInterval(highlight, 400);
-document.querySelector('#text-edit').value = files['index.html'];
 function insertText(elm, text) {
 	elm = document.querySelector(elm) || elm;
 	let ss = elm.selectionStart;
@@ -70,34 +51,20 @@ function insertText(elm, text) {
 	elm.selectionEnd = ss+text.length;
 }
 let r = false;
+let cme = CodeMirror.fromTextArea(document.querySelector('#text-edit'), {
+	lineNumbers: true,
+	theme: "material",
+	mode: "htmlmixed",
+	value: files[currentFile] || '',
+	indentWithTabs: true,
+	indentUnit: 4
+});
+cme.setValue(files[currentFile] || '');
+cme.on('change', ()=>{
+	files[currentFile] = cme.getValue();
+});
 document.querySelector('#text-edit').onkeydown = (e)=>{
 	edits=true;
-	if(e.code.toLowerCase() == 'tab') {
-		e.preventDefault();
-
-		insertText('#text-edit', '\t');
-		highlight();
-	} else if(e.code.toLowerCase() == 'enter') {
-		e.preventDefault();
-		let line = e.target.value.substring(0, e.target.selectionStart)[e.target.value.substring(0, e.target.selectionStart).length-1];
-		let tabs = 0;
-		try {
-			tabs = line.split('\t').length+1;
-		} catch(e) {
-			0;
-		}
-		function r(str, tim=1) {
-			let res = '';
-			for(var i = 0; i<tim; i++) {
-				res += str;
-			}
-			return res;
-		}
-		if(r) {insertText('#text-edit', '\n'+r('\t', tabs-1));r=false;return highlight();}
-		r = true;
-		insertText('#text-edit', '\n'+r('\t', tabs))
-		highlight();
-	}
 }
 
 onbeforeunload = ()=>{
@@ -136,8 +103,8 @@ function uda() {
 		if(fname in files) {
 			file.onclick = ()=>{
 				currentFile = fname;
-				document.querySelector('#text-edit').value = files[currentFile];
-				highlight();
+				cme.setValue(files[currentFile]);
+				highlight(glang(fname));
 				document.querySelectorAll('#files *').forEach(f=>{
 					if(f instanceof HTMLDivElement) {
 						f.style.background = '#3d3c3c';
