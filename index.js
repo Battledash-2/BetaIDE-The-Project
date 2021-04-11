@@ -127,7 +127,7 @@ const Database = require('replpersist'),
 	sess = new Database('loginid', 0.1, {}),
 	proj = new Database('user_project', 0.1, {});
 
-const hasBlacklist = (str, bl='=\'"!@$%^&*-()[]{}\|')=>{
+const hasBlacklist = (str, bl='=\'"!@$%^&*-()[]{}\|\\')=>{
 	let has = false;
 
 	for(var i = 0; i<bl.length; i++) {
@@ -323,10 +323,10 @@ function mimeFromName(fname) {
 
 	return 'text/plain';
 }
-// moved the usercontent.betaide.repl.co
+// moved to usercontent.betaide.repl.co
 // app.get('/p/view/*', (req,res)=>{
 // 	let vid = req.url.substring(8);
-// 	// res.send('Recieved ('+vid+') coming soon.');
+// 	// res.send('Received ('+vid+') coming soon.');
 // 	let split = vid.split('/');
 // 	if(split.length < 1) {return res.send('Missing argument');}
 // 	let user = split[0];
@@ -571,7 +571,7 @@ io.on('connection', (socket)=>{
 						console.log('Unknown project "'+cproj+'"');
 					}
 				} else {
-					console.log('Unknown user')
+					//console.log('Unknown user')
 				}
 			} catch(e){return console.log(e);}
 		}
@@ -604,7 +604,7 @@ app.get('/p/index.html', (req,res)=>{
 		res.redirect('../not_logged_in.html');
 	}
 });
-app.get('/p/*', (req,res)=>{
+app.get('/p/*', async(req,res)=>{
 	const cookies = parseCookies(req.headers.cookie);
 	if(cookies.loginSess && sess.data[cookies.loginSess]) {
 		if(fs.existsSync(__dirname + '/public_logged_in/' + req.url.substring(3))) {
@@ -635,7 +635,7 @@ app.get('/u/*',(req,res)=>{
 	}
 });
 
-app.get('/*', (req,res)=>{
+app.get('/*', async(req,res)=>{
 	const cookies = parseCookies(req.headers.cookie);
 	if(cookies.loginSess && sess.data[cookies.loginSess]) {
 		return res.redirect('/p/'+req.url);

@@ -14,7 +14,7 @@ const viewJson = function() {
 		let json = JSON.stringify(files);
 
 		document.querySelector('#jView').innerText = json;
-		document.querySelector('#jc-btw').value = 'https://betaide.repl.co/p/cli?data={"files":{'+encodeURIComponent(json)+'}}';
+		document.querySelector('#jc-btw').value = 'https://betaide.repl.co/p/cli?data={"files":'+encodeURIComponent(json)+'}';
 		hljs.highlightAll();
 	} catch(e) {
 		console.log('There was an error while trying to update JSON view. Log: ', e);
