@@ -439,6 +439,7 @@ app.get('/p/ide/*', (req,res)=>{
 		return res.send('Unknown user @'+xssParse(user));
 	}
 });
+// cli does NOT mean 'Command-line interface' here
 app.get('/p/cli', (req,res)=>{
 	let user = '';
 
